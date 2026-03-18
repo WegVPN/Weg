@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weg VPN – Быстрый и безопасный VPN.</title>
+    <meta name="description" content="Weg VPN обеспечивает молниеносную скорость, безопасность и доступ к 15+ локациям. Работает на всех устройствах. Переходи в бота Telegram для покупки прямо сейчас!">
+    
+    <!-- Шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Иконки -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Базовые переменные */
+        :root {
+            --bg-color: #050505;
+            --text-main: #ffffff;
+            --text-muted: #a0aab8;
+            --accent-glow: #00ffff;
+            --accent-solid: #00e5e5;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --blob-1: rgba(0, 255, 255, 0.15);
+            --blob-2: rgba(0, 100, 255, 0.15);
+        }
+
+        body.blue-theme {
+            --bg-color: #020817;
+            --accent-glow: #2271ff;
+            --accent-solid: #3b82f6;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --blob-1: rgba(34, 113, 255, 0.2);
+            --blob-2: rgba(100, 50, 255, 0.2);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            transition: background-color 0.5s ease;
+            line-height: 1.6;
+        }
+
+        /* Анимация фона */
+        .bg-blobs {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1; overflow: hidden; pointer-events: none;
+        }
+        .blob {
+            position: absolute; border-radius: 50%; filter: blur(100px);
+            animation: float 10s infinite alternate ease-in-out;
+            transition: background 0.5s ease;
+        }
+        .blob-1 { width: 40vw; height: 40vw; background: var(--blob-1); top: -10%; left: -10%; }
+        .blob-2 { width: 30vw; height: 30vw; background: var(--blob-2); bottom: -10%; right: -10%; animation-delay: -5s; }
+        @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(10%, 15%) scale(1.2); } }
+
+        /* Эффект стекла */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        section { padding: 90px 0; }
+        .section-title { text-align: center; font-size: 40px; margin-bottom: 20px; font-weight: 800; }
+        .section-subtitle { text-align: center; color: var(--text-muted); margin-bottom: 60px; font-size: 18px; }
+
+        /* Шапка */
+        header { position: fixed; top: 0; left: 0; width: 100%; padding: 20px 0; z-index: 100; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; border-radius: 50px; }
+        .logo { font-size: 24px; font-weight: 900; letter-spacing: -1px; color: var(--text-main); text-decoration: none; }
+        .logo span { color: var(--accent-solid); }
+
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.1); border: 1px solid var(--glass-border); color: var(--text-main);
+            width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .theme-toggle:hover { background: rgba(255, 255, 255, 0.2); transform: rotate(15deg); }
+
+        /* Кнопки */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            padding: 18px 40px; font-size: 18px; font-weight: 700; color: #000; background: var(--accent-solid);
+            border-radius: 50px; text-decoration: none; transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3); border: none; cursor: pointer;
+        }
+        body.blue-theme .btn { color: #fff; box-shadow: 0 0 20px rgba(34, 113, 255, 0.4); }
+        .btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 0 30px var(--accent-glow); }
+        
+        .btn-secondary { background: transparent; color: var(--text-main); border: 1px solid var(--glass-border); box-shadow: none; }
+        body.blue-theme .btn-secondary { color: var(--text-main); }
+        .btn-secondary:hover { background: var(--glass-bg); box-shadow: 0 0 15px rgba(255,255,255,0.1); }
+
+        /* 1. Главный экран */
+        .hero { min-height: 100vh; display: flex; align-items: center; text-align: center; padding-top: 120px; }
+        .hero-content { max-width: 800px; margin: 0 auto; }
+        h1 { font-size: 64px; font-weight: 900; line-height: 1.1; margin-bottom: 20px; letter-spacing: -2px; }
+        .hero-subtitle { font-size: 20px; color: var(--text-muted); margin-bottom: 40px; }
+        .hero-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 50px; }
+        .tag { padding: 10px 20px; border-radius: 50px; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+
+        /* 2. Преимущества */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .feature-card { padding: 40px 30px; text-align: left; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .feature-card:hover { transform: translateY(-10px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-color: var(--accent-solid); }
+        .feature-icon { font-size: 40px; color: var(--accent-solid); margin-bottom: 20px; }
+        .feature-card h3 { margin-bottom: 15px; font-size: 22px; }
+        .feature-card p { color: var(--text-muted); font-size: 15px; }
+
+        /* 3. Устройства (Новый блок) */
+        .devices-flex { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
+        .device-icon { width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; font-size: 40px; border-radius: 24px; transition: 0.3s; }
+        .device-icon:hover { transform: scale(1.1); color: var(--accent-solid); border-color: var(--accent-solid); }
+
+        /* 4. Как это работает (Новый блок) */
+        .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; position: relative; }
+        .step-card { padding: 40px 30px; text-align: center; position: relative; }
+        .step-number { width: 50px; height: 50px; background: var(--accent-solid); color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 800; margin: 0 auto 20px auto; }
+        body.blue-theme .step-number { color: #fff; }
+        .step-card h3 { margin-bottom: 15px; }
+        .step-card p { color: var(--text-muted); font-size: 15px; }
+
+        /* 5. Локации (Новый блок) */
+        .locations-wrapper { max-width: 900px; margin: 0 auto; text-align: center; }
+        .locations-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 40px; }
+        .loc-badge { padding: 12px 24px; font-weight: 600; display: flex; align-items: center; gap: 10px; border-radius: 12px; }
+        .loc-badge i { color: var(--accent-solid); }
+
+        /* 6. Тарифы */
+        .pricing-info { text-align: center; max-width: 700px; margin: 0 auto; padding: 50px; }
+        .pricing-info h3 { font-size: 28px; margin-bottom: 20px; }
+        .pricing-info p { color: var(--text-muted); margin-bottom: 30px; font-size: 18px; }
+
+        /* 7. FAQ (Новый блок) */
+        .faq-container { max-width: 800px; margin: 0 auto; }
+        .faq-item { margin-bottom: 15px; }
+        .faq-question { width: 100%; text-align: left; padding: 25px; font-size: 18px; font-weight: 600; background: none; border: none; color: var(--text-main); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .faq-question i { transition: transform 0.3s ease; color: var(--accent-solid); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 25px; color: var(--text-muted); }
+        .faq-item.active .faq-question i { transform: rotate(180deg); }
+        .faq-item.active .faq-answer { padding-bottom: 25px; max-height: 200px; }
+
+        /* 8. Telegram Канал */
+        .community { text-align: center; }
+        .community-card { padding: 60px 20px; }
+        .community-card i.fa-telegram { font-size: 50px; color: #0088cc; margin-bottom: 20px; }
+        .community-card h2 { margin-bottom: 15px; }
+        .community-card p { color: var(--text-muted); margin-bottom: 30px; }
+
+        /* 9. Футер CTA */
+        .footer-cta { text-align: center; padding-bottom: 120px; border-top: 1px solid var(--glass-border); padding-top: 80px; margin-top: 80px;}
+        .footer-cta h2 { font-size: 48px; margin-bottom: 40px; }
+
+        /* Анимации при скролле (JS класс) */
+        .hidden-el { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .show-el { opacity: 1; transform: translateY(0); }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            h1 { font-size: 42px; }
+            .section-title, .footer-cta h2 { font-size: 32px; }
+            .btn { width: 100%; font-size: 16px; }
+            .hero-tags { flex-direction: column; gap: 10px; }
+            .tag { width: 100%; justify-content: center; }
+            .steps-grid { grid-template-columns: 1fr; gap: 20px; }
+            .device-icon { width: 80px; height: 80px; font-size: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Анимация фона -->
+    <div class="bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <!-- Шапка -->
+    <header>
+        <div class="container">
+            <div class="header-content glass">
+                <a href="#" class="logo">Weg <span>VPN</span></a>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Сменить тему">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Блок 1: Главный экран -->
+        <section id="hero" class="hero hidden-el">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Быстрый и безопасный Weg VPN</h1>
+                    <p class="hero-subtitle">Молниеносная скорость и надежность для всех твоих устройств.</p>
+                    
+                    <div class="hero-tags">
+                        <div class="glass tag"><i class="fa-solid fa-bolt"></i> Молниеносная скорость</div>
+                        <div class="glass tag"><i class="fa-solid fa-globe"></i> 15+ локаций</div>
+                        <div class="glass tag"><i class="fa-solid fa-shield-halved"></i> Строго низкий пинг</div>
+                    </div>
+
+                    <a href="https://t.me/WegVPN_bot" target="_blank" rel="noopener noreferrer" class="btn">
+                        <i class="fa-brands fa-telegram"></i> Перейти в бота и купить
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Блок 2: Преимущества -->
+        <section id="features">
+            <div class="container">
+                <h2 class="section-title hidden-el">Почему именно Weg VPN?</h2>
+                <p class="section-subtitle hidden-el">Хороший обход блокировок по доступной цене.</p>
+                <div class="features-grid">
+                    <div class="feature-card glass hidden-el">
+                        <i class="fa-solid fa-shield-halved feature-icon"></i>
+                        <h3>Полная безопасность</h3>
+                        <p>Надежное шифрование трафика. Твои данные всегда в безопасности от провайдеров и роскамнадзора.</p>
+                    </div>
+                    <div class="feature-card glass hidden-el">
+                        <i class="fa-solid fa-rocket feature-icon"></i>
+                        <h3>Высокая скорость</h3>
+                        <p>Мощные серверы, загрузки тяжелых файлов и игр без пинга.</p>
+                    </div>
+                    <div class="feature-card glass hidden-el">
+                        <i class="fa-solid fa-infinity feature-icon"></i>
+                        <h3>Безлимит трафика</h3>
+                        <p>Никаких скрытых ограничений по скорости и объему передаваемых данных.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Блок 3: Платформы -->
+        <section id="devices">
+            <div class="container">
+                <h2 class="section-title hidden-el">Один аккаунт. Все устройства.</h2>
+                <p class="section-subtitle hidden-el">Настрой VPN на любом устройстве за пару минут.</p>
+                <div class="devices-flex hidden-el">
+                    <div class="device-icon glass"><i class="fa-brands fa-apple"></i></div>
+                    <div class="device-icon glass"><i class="fa-brands fa-android"></i></div>
+                    <div class="device-icon glass"><i class="fa-brands fa-windows"></i></div>
+                    <div class="device-icon glass"><i class="fa-solid fa-desktop"></i></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Блок 4: Как это работает -->
+        <section id="how-it-works">
+            <div class="container">
+                <h2 class="section-title hidden-el">Как начать пользоваться?</h2>
+                <p class="section-subtitle hidden-el">Процесс подключения максимально прост и автоматизирован.</p>
+                <div class="steps-grid">
+                    <div class="step-card glass hidden-el">
+                        <div class="step-number">1</div>
+                        <h3>Запусти бота</h3>
+                        <p>Перейди в нашего Telegram-бота. Никаких долгих регистраций и почт.</p>
+                    </div>
+                    <div class="step-card glass hidden-el">
+                        <div class="step-number">2</div>
+                        <h3>Выбери тариф</h3>
+                        <p>Оплати подписку удобным способом. Бот моментально выдаст настройки.</p>
+                    </div>
+                    <div class="step-card glass hidden-el">
+                        <div class="step-number">3</div>
+                        <h3>Подключись</h3>
+                        <p>Добавь ключ в приложение и наслаждайся свободным интернетом в один клик.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Блок 5: Локации -->
+        <section id="locations">
+            <div class="container">
+                <div class="locations-wrapper hidden-el">
+                    <h2 class="section-title">Серверы по всему миру</h2>
+                    <p class="section-subtitle">Более 15 стран с высокой пропускной способностью для обхода любых блокировок.</p>
+                    
+                    <div class="locations-grid">
+                        <div class="loc-badge glass"><i class="fa-solid fa-location-dot"></i> Нидерланды</div>
+                        <div class="loc-badge glass"><i class="fa-solid fa-location-dot"></i> Германия</div>
+                        <div class="loc-badge glass"><i class="fa-solid fa-location-dot"></i> США</div>
+                        <div class="loc-badge glass"><i class="fa-solid fa-location-dot"></i> Великобритания</div>
+                        <div class="loc-badge glass"><i class="fa-solid fa-location-dot"></i> Турция</div>
+                        <div class="loc-badge glass"><i class="fa-solid fa-location-dot"></i> Франция</div>
+                        <div class="loc-badge glass"><i class="fa-solid fa-ellipsis"></i> и другие</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Блок 6: Тарифы (Инфо) -->
+        <section id="pricing">
+            <div class="container">
+                <div class="pricing-info glass hidden-el">
+                    <i class="fa-solid fa-gem feature-icon" style="margin-bottom:20px; color: var(--text-muted)"></i>
+                    <h3>Умная система тарифов</h3>
+                    <p>Мы не берем деньги за красивый сайт. Выбери подписку в боте на месяц, год или навсегда по самой честной цене.</p>
+                    <a href="https://t.me/WegVPN_bot" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="margin-top: 20px;">
+                        Узнать цены в боте <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Блок 7: FAQ -->
+        <section id="faq">
+            <div class="container">
+                <h2 class="section-title hidden-el">Частые вопросы</h2>
+                <div class="faq-container hidden-el">
+                    <div class="faq-item glass">
+                        <button class="faq-question">Смогу ли я смотреть Netflix / YouTube? <i class="fa-solid fa-chevron-down"></i></button>
+                        <div class="faq-answer"><p>Да! Наши серверы не определяются сервисами как VPN, поэтому вы сможете наслаждаться контентом в максимальном качестве без буферизации.</p></div>
+                    </div>
+                    <div class="faq-item glass">
+                        <button class="faq-question">Что делать, если я не смогу настроить? <i class="fa-solid fa-chevron-down"></i></button>
+                        <div class="faq-answer"><p>В боте есть подробная инструкция в картинках. Если что-то пойдет не так, наша техническая поддержка в Telegram поможет вам настроить все за пару минут.</p></div>
+                    </div>
+                    <div class="faq-item glass">
+                        <button class="faq-question">Вы храните логи моих действий? <i class="fa-solid fa-chevron-down"></i></button>
+                        <div class="faq-answer"><p>Нет. Мы придерживаемся строгой политики "No Logs". Мы физически не записываем историю ваших посещений, скачиваний или IP-адреса.</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Блок 8: Telegram Канал -->
+        <section id="community" class="community">
+            <div class="container">
+                <div class="community-card glass hidden-el">
+                    <i class="fa-brands fa-telegram"></i>
+                    <h2>Будь в курсе новостей</h2>
+                    <p>Следи за обновлениями локаций, анонсами и секретными промокодами в нашем канале.</p>
+                    <a href="https://t.me/wegistro" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                        Подписаться на канал
+                    </a>
+                </div>
+            </div>
+        </section>
+
+
+                <section id="community" class="community">
+            <div class="container">
+                <div class="community-card glass hidden-el">
+                    <i class="fa-brands fa-telegram"></i>
+                    <h2>Остались вопросы?</h2>
+                    <p>Пиши в поддержку там тебе подскажут и решут проблему.</p>
+                    <a href="https://t.me/Wegvpn_support_bot" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                        Написать в поддержку
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Блок 9: Футер CTA -->
+        <section id="footer-cta" class="footer-cta">
+            <div class="container hidden-el">
+                <h2>Начни пользоваться свободным интернетом уже сегодня.</h2>
+                <a href="https://t.me/WegVPN_bot" target="_blank" rel="noopener noreferrer" class="btn">
+                    <i class="fa-solid fa-shield-check"></i> Купить Weg VPN
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- JavaScript -->
+    <script>
+        // Переключатель темы
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'blue') {
+            document.body.classList.add('blue-theme');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('blue-theme');
+            if (document.body.classList.contains('blue-theme')) {
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'blue');
+            } else {
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // FAQ Аккордеон
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                // Закрываем все остальные
+                faqItems.forEach(i => i.classList.remove('active'));
+                // Открываем текущий, если он был закрыт
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // Анимация при скролле (Intersection Observer)
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show-el');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.hidden-el').forEach((element) => {
+            observer.observe(element);
+        });
+        
+        // Плавный скроллинг наверх
+        document.querySelector('.logo').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
